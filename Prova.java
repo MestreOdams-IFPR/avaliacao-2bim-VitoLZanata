@@ -1,9 +1,13 @@
+import java.util.Scanner;
 
 public class Prova {
+    final static Scanner sc = new Scanner(System.in);
+
     public static void main(String[] args) {
         // 1 - esse método inverte os as posições, inverte o vetor, de e até d, por isso
         // a verificação de e>=d,
         // para ele parar, é o caso base
+
         // int[] v = { 10, 56, 78, 42, 12, 36 };
         // int e = 0;
         // int d = 5;
@@ -25,12 +29,66 @@ public class Prova {
         // String x = " THis is a Dancing sentence aaaaaaaaaaa z";
         // System.out.println(sentencaDançante(x));
 
-        // Jedi
+        // Jedi força
 
-        int numCand = 5;
-        int numAprov = 2;
-        int[] vet = { 1, 5, 2, 4, 3 };
-        System.out.println(somarForca(numAprov, numCand, vet));
+        // int numCand = 5;
+        // int numAprov = 2;
+        // int[] vet = { 1, 5, 2, 4, 3 };
+        // System.out.println(somarForca(numAprov, numCand, vet));
+
+        // jedi cristais
+
+        int qtdCristais = 0;
+        int qtdBuscas = 0;
+        int caso = 0;
+
+        while (true) {
+            qtdCristais = sc.nextInt();
+            qtdBuscas = sc.nextInt();
+            if (qtdCristais == 0 && qtdBuscas == 0) {
+                break;
+            }
+
+            int[] cristais = new int[qtdCristais];
+            cristais = lerVetInt(cristais);
+            cristais = mergeSortCrescente(0, cristais.length, cristais);
+            int[] buscas = new int[qtdBuscas];
+            buscas = lerVetInt(buscas);
+
+            System.out.println("CASE# " + ++caso + ":");
+            for (int i = 0; i < buscas.length; i++) {
+                int posiAchada = buscaBinariaPosicao(cristais, 0, cristais.length, 0, buscas[i]);
+
+                if (posiAchada > -1) {
+                    System.out.println(buscas[i] + " found at " + (posiAchada + 1));
+                } else {
+                    System.out.println(buscas[i] + " not found");
+                }
+                System.out.println();
+            }
+
+        }
+
+    }
+
+    public static int[] lerVetInt(int[] cristais) {
+        for (int i = 0; i < cristais.length; i++) {
+            cristais[i] = sc.nextInt();
+        }
+        return cristais;
+    }
+
+    public static int acharCristal(int[] cristais, int[] buscados) {
+        int x = 0;
+
+        for (int i = 0; i < buscados.length; i++) {
+            x = buscaBinariaPosicao(cristais, 0, cristais.length, 0, i);
+            if (x > -1) {
+
+            }
+        }
+
+        return x;
     }
 
     public static int somarForca(int numAprov, int numCand, int[] vet) {
@@ -156,4 +214,60 @@ public class Prova {
             vet[j] = vetAux[j - inicio];
         }
     }
+
+    public static int[] mergeSortCrescente(int inicio, int fim, int[] vet) {
+        if (inicio < fim - 1) {
+            int meio = (inicio + fim) / 2;
+            mergeSort(inicio, meio, vet);
+            mergeSort(meio, fim, vet);
+            doMergeCrescente(vet, inicio, meio, fim);
+        }
+        return vet;
+    }
+
+    public static void doMergeCrescente(int[] vet, int inicio, int meio, int fim) {
+        int i = inicio;
+        int m = meio;
+        int k = 0;
+        int[] vetAux = new int[fim - inicio];
+
+        while (i < meio && m < fim) {
+            if (vet[i] <= vet[m]) {
+                vetAux[k++] = vet[i++];
+            } else {
+                vetAux[k++] = vet[m++];
+            }
+        }
+
+        while (i < meio) {
+            vetAux[k++] = vet[i++];
+        }
+
+        while (m < fim) {
+            vetAux[k++] = vet[m++];
+        }
+
+        for (int j = inicio; j < fim; j++) {
+            vet[j] = vetAux[j - inicio];
+        }
+    }
+
+    public static int buscaBinariaPosicao(int[] vet, int inicio, int fim, int posiAtual, int valorBuscado) {
+        if (inicio > fim) {
+            return -2; // não encontrado
+        }
+
+        if (vet[posiAtual] == valorBuscado) {
+            return posiAtual;
+        } else if (valorBuscado > vet[posiAtual]) {
+            return buscaBinariaPosicao(vet, posiAtual + 1, fim, media(posiAtual + 1, fim), valorBuscado);
+        } else {
+            return buscaBinariaPosicao(vet, inicio, posiAtual - 1, media(inicio, posiAtual - 1), valorBuscado);
+        }
+    }
+
+    public static int media(int a, int b) {
+        return (a + b) / 2;
+    }
+
 }
