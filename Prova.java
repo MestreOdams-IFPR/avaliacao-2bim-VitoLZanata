@@ -156,23 +156,4 @@ public class Prova {
             vet[j] = vetAux[j - inicio];
         }
     }
-
-    public static int buscaBinariaPosicao(int[] vet, int inicio, int fim, int posiAtual, int valorBuscado) {
-        if (inicio > fim) {
-            return -2; // não encontrado
-        }
-
-        if (vet[posiAtual] == valorBuscado) {
-            return posiAtual;
-        } else if (valorBuscado > vet[posiAtual]) {
-            return buscaBinariaPosicao(vet, posiAtual + 1, fim, media(posiAtual + 1, fim), valorBuscado);
-        } else {
-            return buscaBinariaPosicao(vet, inicio, posiAtual - 1, media(inicio, posiAtual - 1), valorBuscado);
-        }
-    }
-
-    public static int media(int a, int b) {
-        return (a + b) / 2;
-    }
-
 }
